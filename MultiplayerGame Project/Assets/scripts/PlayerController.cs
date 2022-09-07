@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
         if (PV.IsMine)
         {
+            EquipItem(1);
             EquipItem(0);
         }
         else
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         Look();
         Move();
         Jump();
+        
 
         for (int i = 0; i < items.Length; i++)
         {

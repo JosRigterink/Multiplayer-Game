@@ -15,3 +15,8 @@ MonoBehaviour:
   itemName: RIffle
   damage: 50
   range: 20
+  recoil: 0.1
+  normalLocalPosition: {x: 0, y: 0, z: 0}
+  aimingLocalPosition: {x: -0.477, y: -0.015, z: 0.143}
+  aimSmoothing: 10
+  aimFieldOfView: 40
