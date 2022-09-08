@@ -1,46 +1,37 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class SingleShotGun : Gun
+public class GunScript : Gun
 {
+    PhotonView pv;
     [SerializeField] Camera cam;
-
-    PhotonView PV;
 
     void Awake()
     {
-        PV = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
     }
 
-    void Start()
+    public void Start()
     {
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
-        //((GunInfo)itemInfo).shotsFired = 0;
         ((GunInfo)itemInfo).readyToShoot = true;
     }
 
-    void Update()
+    private void Update()
     {
         MyInput();
-        if (cam == null)
-        {
-            cam = FindObjectOfType<Camera>();
-        }
-        if (cam == null)
-        {
-            return;
-        }
         DetermineAim();
     }
 
-    void MyInput()
+    private void MyInput()
     {
         if (((GunInfo)itemInfo).allowButtonHold) ((GunInfo)itemInfo).shooting = Input.GetKey(KeyCode.Mouse0);
         else ((GunInfo)itemInfo).shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
         if (Input.GetKey(KeyCode.R) && ((GunInfo)itemInfo).bulletsleft < ((GunInfo)itemInfo).magazineSize && ((GunInfo)itemInfo).reloading == false) Reload();
+
 
         //shoot
         if (((GunInfo)itemInfo).readyToShoot && ((GunInfo)itemInfo).shooting && ((GunInfo)itemInfo).reloading == false && ((GunInfo)itemInfo).bulletsleft > 0)
@@ -50,7 +41,6 @@ public class SingleShotGun : Gun
             ((GunInfo)itemInfo).readyToShoot = false;
             DetermineRecoil();
         }
-
     }
 
     void Shoot()
@@ -63,48 +53,38 @@ public class SingleShotGun : Gun
         //calculate Direction with spread
         Vector3 direction = cam.transform.forward + new Vector3(x, y, z);
 
-        //raycast
+        //Raycast
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         ray.origin = cam.transform.position;
-        if(Physics.Raycast(ray,out RaycastHit hit,((GunInfo)itemInfo).range))
+        if (Physics.Raycast(ray, out RaycastHit hit, ((GunInfo)itemInfo).range))
         {
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
-            Debug.Log(hit.collider.name);
-            PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
+            pv.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }
 
         ((GunInfo)itemInfo).bulletsleft--;
         ((GunInfo)itemInfo).bulletsShot--;
         ((GunInfo)itemInfo).shotsFired++;
 
-        Invoke("ResetShot", ((GunInfo)itemInfo).timeBetweenShooting);
+        Invoke("ResetShot",((GunInfo)itemInfo).timeBetweenShooting);
 
-        if (((GunInfo)itemInfo).bulletsShot > 0 && ((GunInfo)itemInfo).bulletsleft > 0)
+        if(((GunInfo)itemInfo).bulletsShot > 0 && ((GunInfo)itemInfo).bulletsleft > 0)
         {
             Invoke("Shoot", ((GunInfo)itemInfo).timeBetweenShooting);
         }
     }
 
-    [PunRPC]
-    public void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
-    {
-        Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
-        if (colliders.Length != 0)
-        {
-            GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hitPosition + hitNormal * 0.001f, Quaternion.LookRotation(hitNormal, Vector3.up) * bulletImpactPrefab.transform.rotation);
-            Destroy(bulletImpactObj, 8f);
-            bulletImpactObj.transform.SetParent(colliders[0].transform);
-        }
-    }
     void ResetShot()
     {
         ((GunInfo)itemInfo).readyToShoot = true;
     }
-    private void Reload()
+
+    void Reload()
     {
         ((GunInfo)itemInfo).reloading = true;
         Invoke("ReloadFinished", ((GunInfo)itemInfo).reloadTime);
     }
+
     private void ReloadFinished()
     {
         if (((GunInfo)itemInfo).ammoTotal <= 0 && ((GunInfo)itemInfo).bulletsleft <= 0)
@@ -114,21 +94,22 @@ public class SingleShotGun : Gun
             ((GunInfo)itemInfo).shotsFired = 0;
         }
 
-       ((GunInfo)itemInfo).ammoTotal -= ((GunInfo)itemInfo).shotsFired;
+        ((GunInfo)itemInfo).ammoTotal -= ((GunInfo)itemInfo).shotsFired;
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
         ((GunInfo)itemInfo).reloading = false;
         ((GunInfo)itemInfo).shotsFired -= ((GunInfo)itemInfo).shotsFired;
 
-        if (((GunInfo)itemInfo).ammoTotal <= 0)
+        if(((GunInfo)itemInfo).ammoTotal <= 0)
         {
             ((GunInfo)itemInfo).ammoTotal = 0;
             ((GunInfo)itemInfo).shotsFired = 0;
             ((GunInfo)itemInfo).magazineSize = 0;
         }
     }
+
     void DetermineAim()
     {
-        if (PV.IsMine)
+        if (pv.IsMine)
         {
             Vector3 target = (((GunInfo)itemInfo).normalLocalPosition);
             if (Input.GetMouseButton(1))
@@ -149,9 +130,6 @@ public class SingleShotGun : Gun
 
     void DetermineRecoil()
     {
-        if (PV.IsMine)
-        {
-            transform.localPosition -= Vector3.forward * (((GunInfo)itemInfo).recoil);
-        }
+        transform.localPosition -= Vector3.forward * (((GunInfo)itemInfo).recoil);
     }
 }

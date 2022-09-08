@@ -102,11 +102,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 EquipItem(itemIndex - 1);
             }
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            items[itemIndex].Use();
-        }
-
+       
         if (transform.position.y < -10f)// kills the player when it falls off the map
         {
             Die();
