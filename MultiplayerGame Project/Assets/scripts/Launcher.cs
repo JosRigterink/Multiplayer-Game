@@ -6,9 +6,20 @@ using TMPro;
 using Photon.Realtime;
 using System.Linq;
 
+[System.Serializable]
+public class MapData
+{
+    public string name;
+    public int scene;
+}
+
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
+    public MapData[] maps;
+    public int currentmap = 0;
+    [SerializeField] TMP_Text mapValue;
+    [SerializeField] GameObject mapSelectButton;
 
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] TMP_Text errorText;
@@ -72,11 +83,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -84,10 +97,17 @@ public class Launcher : MonoBehaviourPunCallbacks
         errorText.text = "Room Creation Failed:" + message;
         MenuManager.Instance.OpenMenu("error");
     }
+    public void ChangeMap()
+    {
+        currentmap++;
+        if (currentmap >= maps.Length) currentmap = 0;
+        mapValue.text = "MAP: " + maps[currentmap].name;
+    }
 
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(1);
+        //PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(maps[currentmap].scene);
     }
     public void leaveRoom()
     {
