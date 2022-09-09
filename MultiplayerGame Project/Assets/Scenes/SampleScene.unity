@@ -1472,7 +1472,7 @@ MonoBehaviour:
     scene: 1
   - name: plain
     scene: 2
-  currentmap: 1
+  currentmap: 0
   mapValue: {fileID: 313269003}
   mapSelectButton: {fileID: 808336591}
   roomNameInputField: {fileID: 1124509244}
