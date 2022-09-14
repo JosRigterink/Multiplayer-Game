@@ -11,6 +11,7 @@ public class GunInfo : ItemInfo
     public int magazineSize, bulletsPerTap;
     public bool allowButtonHold;
     public int bulletsleft;
+    [HideInInspector]
     public int bulletsShot;
     public int ammoTotal;
     public int shotsFired;
@@ -18,7 +19,6 @@ public class GunInfo : ItemInfo
     [Header("Bools")]
     public bool shooting, readyToShoot, reloading;
     public bool holdingWeapon;
-    public bool pistol, AR, shotgun;
 
     [Header("aiming")]
     public Vector3 normalLocalPosition;

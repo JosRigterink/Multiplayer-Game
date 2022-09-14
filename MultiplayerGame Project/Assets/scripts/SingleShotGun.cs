@@ -17,7 +17,7 @@ public class SingleShotGun : Gun
     void Start()
     {
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
-        //((GunInfo)itemInfo).shotsFired = 0;
+        ((GunInfo)itemInfo).shotsFired = 0;
         ((GunInfo)itemInfo).readyToShoot = true;
     }
 
@@ -48,7 +48,6 @@ public class SingleShotGun : Gun
             ((GunInfo)itemInfo).bulletsShot = ((GunInfo)itemInfo).bulletsPerTap;
             Shoot();
             ((GunInfo)itemInfo).readyToShoot = false;
-            DetermineRecoil();
         }
 
     }
@@ -59,7 +58,7 @@ public class SingleShotGun : Gun
         float x = Random.Range(-((GunInfo)itemInfo).spread, ((GunInfo)itemInfo).spread);
         float y = Random.Range(-((GunInfo)itemInfo).spread, ((GunInfo)itemInfo).spread);
         float z = Random.Range(-((GunInfo)itemInfo).spread, ((GunInfo)itemInfo).spread);
-
+        DetermineRecoil();
         //calculate Direction with spread
         Vector3 direction = cam.transform.forward + new Vector3(x, y, z);
 
@@ -69,6 +68,11 @@ public class SingleShotGun : Gun
         if(Physics.Raycast(ray,out RaycastHit hit,((GunInfo)itemInfo).range))
         {
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
+            if (hit.collider.tag == "Player")
+            {
+                //hitMarker.SetActive(true);
+                //Invoke("HitMarkerOnScreen", 0.2f);
+            }
             Debug.Log(hit.collider.name);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }
@@ -151,7 +155,12 @@ public class SingleShotGun : Gun
     {
         if (PV.IsMine)
         {
-            transform.localPosition -= Vector3.forward * (((GunInfo)itemInfo).recoil);
+            transform.localPosition -= Vector3.forward * ((GunInfo)itemInfo).recoil;
         }
+    }
+
+    void HitMarkerOnScreen()
+    {
+        hitMarker.SetActive(false);
     }
 }
