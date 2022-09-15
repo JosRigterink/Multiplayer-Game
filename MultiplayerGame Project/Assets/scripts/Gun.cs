@@ -5,5 +5,4 @@ using UnityEngine;
 public abstract class Gun : Item
 {
     public GameObject bulletImpactPrefab;
-    public GameObject hitMarker;
 }
