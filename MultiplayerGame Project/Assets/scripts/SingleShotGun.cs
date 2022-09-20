@@ -22,6 +22,11 @@ public class SingleShotGun : Gun
         ((GunInfo)itemInfo).readyToShoot = true;
     }
 
+    private void OnEnable()
+    {
+        ammoText.text = $"{((GunInfo)itemInfo).bulletsleft}/{((GunInfo)itemInfo).ammoTotal}";
+    }
+
     void Update()
     {
         MyInput();
@@ -50,6 +55,7 @@ public class SingleShotGun : Gun
             {
                 ((GunInfo)itemInfo).bulletsShot = ((GunInfo)itemInfo).bulletsPerTap;
                 Shoot();
+                ammoText.text = $"{((GunInfo)itemInfo).bulletsleft}/{((GunInfo)itemInfo).ammoTotal}";
                 ((GunInfo)itemInfo).readyToShoot = false;
                 DetermineRecoil();
             }
@@ -58,6 +64,7 @@ public class SingleShotGun : Gun
 
     void Shoot()
     {
+ 
         //spread
         float x = Random.Range(-((GunInfo)itemInfo).spread, ((GunInfo)itemInfo).spread);
         float y = Random.Range(-((GunInfo)itemInfo).spread, ((GunInfo)itemInfo).spread);
@@ -127,6 +134,7 @@ public class SingleShotGun : Gun
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
         ((GunInfo)itemInfo).reloading = false;
         ((GunInfo)itemInfo).shotsFired -= ((GunInfo)itemInfo).shotsFired;
+        ammoText.text = $"{((GunInfo)itemInfo).bulletsleft}/{((GunInfo)itemInfo).ammoTotal}";
 
         if (((GunInfo)itemInfo).ammoTotal <= 0)
         {

@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         Look();
         Move();
         Jump();
-        
 
         for (int i = 0; i < items.Length; i++)
         {

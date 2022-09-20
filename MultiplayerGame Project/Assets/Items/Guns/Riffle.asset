@@ -24,15 +24,12 @@ MonoBehaviour:
   allowButtonHold: 1
   bulletsleft: 35
   bulletsShot: 0
-  ammoTotal: 247
+  ammoTotal: 300
   shotsFired: 0
   shooting: 0
   readyToShoot: 1
   reloading: 0
   holdingWeapon: 1
-  pistol: 0
-  AR: 1
-  shotgun: 0
   normalLocalPosition: {x: 0, y: 0, z: 0}
   aimingLocalPosition: {x: -0.251, y: 0.051, z: 0.237}
   recoil: 0.1
