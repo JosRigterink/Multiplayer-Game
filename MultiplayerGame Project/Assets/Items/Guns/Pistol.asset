@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Pistol
   damage: 10
-  timeBetweenShooting: 0.2
+  timeBetweenShooting: 0.15
   spread: 0.01
   range: 100
   reloadTime: 1
-  timeBetweenShots: 0
+  timeBetweenShots: 1
   magazineSize: 20
   bulletsPerTap: 1
   allowButtonHold: 0
-  bulletsleft: 20
+  bulletsleft: 18
   bulletsShot: 0
-  ammoTotal: 200
-  shotsFired: 0
+  ammoTotal: 87
+  shotsFired: 2
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  holdingWeapon: 0
-  pistol: 0
+  holdingWeapon: 1
+  pistol: 1
   AR: 0
   shotgun: 0
   normalLocalPosition: {x: 0, y: 0, z: 0}
-  aimingLocalPosition: {x: 0, y: 0, z: 0}
+  aimingLocalPosition: {x: -0.23, y: 0.06, z: 0.029}
   recoil: 0.1
   aimSmoothing: 10
   aimFieldOfView: 30

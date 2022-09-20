@@ -13,28 +13,28 @@ MonoBehaviour:
   m_Name: Riffle
   m_EditorClassIdentifier: 
   itemName: RIffle
-  damage: 20
+  damage: 10
   timeBetweenShooting: 0.1
-  spread: 0.01
+  spread: 0.02
   range: 100
   reloadTime: 2
-  timeBetweenShots: 0
+  timeBetweenShots: 0.2
   magazineSize: 35
   bulletsPerTap: 1
   allowButtonHold: 1
   bulletsleft: 35
   bulletsShot: 0
-  ammoTotal: 200
+  ammoTotal: 247
   shotsFired: 0
   shooting: 0
   readyToShoot: 1
   reloading: 0
   holdingWeapon: 1
   pistol: 0
-  AR: 0
+  AR: 1
   shotgun: 0
   normalLocalPosition: {x: 0, y: 0, z: 0}
-  aimingLocalPosition: {x: -0.477, y: -0.015, z: 0.143}
+  aimingLocalPosition: {x: -0.251, y: 0.051, z: 0.237}
   recoil: 0.1
   aimSmoothing: 10
   aimFieldOfView: 40

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class SingleShotGun : Gun
 {
@@ -17,7 +18,7 @@ public class SingleShotGun : Gun
     void Start()
     {
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
-        //((GunInfo)itemInfo).shotsFired = 0;
+        ((GunInfo)itemInfo).shotsFired = 0;
         ((GunInfo)itemInfo).readyToShoot = true;
     }
 
@@ -37,20 +38,22 @@ public class SingleShotGun : Gun
 
     void MyInput()
     {
-        if (((GunInfo)itemInfo).allowButtonHold) ((GunInfo)itemInfo).shooting = Input.GetKey(KeyCode.Mouse0);
-        else ((GunInfo)itemInfo).shooting = Input.GetKeyDown(KeyCode.Mouse0);
-
-        if (Input.GetKey(KeyCode.R) && ((GunInfo)itemInfo).bulletsleft < ((GunInfo)itemInfo).magazineSize && ((GunInfo)itemInfo).reloading == false) Reload();
-
-        //shoot
-        if (((GunInfo)itemInfo).readyToShoot && ((GunInfo)itemInfo).shooting && ((GunInfo)itemInfo).reloading == false && ((GunInfo)itemInfo).bulletsleft > 0)
+        if (PV.IsMine)
         {
-            ((GunInfo)itemInfo).bulletsShot = ((GunInfo)itemInfo).bulletsPerTap;
-            Shoot();
-            ((GunInfo)itemInfo).readyToShoot = false;
-            DetermineRecoil();
-        }
+            if (((GunInfo)itemInfo).allowButtonHold) ((GunInfo)itemInfo).shooting = Input.GetKey(KeyCode.Mouse0);
+            else ((GunInfo)itemInfo).shooting = Input.GetKeyDown(KeyCode.Mouse0);
 
+
+            if (Input.GetKey(KeyCode.R) && ((GunInfo)itemInfo).bulletsleft < ((GunInfo)itemInfo).magazineSize && ((GunInfo)itemInfo).reloading == false) Reload();
+
+            if (((GunInfo)itemInfo).readyToShoot && ((GunInfo)itemInfo).shooting && ((GunInfo)itemInfo).reloading == false && ((GunInfo)itemInfo).bulletsleft > 0)
+            {
+                ((GunInfo)itemInfo).bulletsShot = ((GunInfo)itemInfo).bulletsPerTap;
+                Shoot();
+                ((GunInfo)itemInfo).readyToShoot = false;
+                DetermineRecoil();
+            }
+        }
     }
 
     void Shoot()
@@ -64,13 +67,19 @@ public class SingleShotGun : Gun
         Vector3 direction = cam.transform.forward + new Vector3(x, y, z);
 
         //raycast
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
-        ray.origin = cam.transform.position;
-        if(Physics.Raycast(ray,out RaycastHit hit,((GunInfo)itemInfo).range))
+        //Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        //ray.origin = cam.transform.position;
+        if(Physics.Raycast(cam.transform.position, direction, out RaycastHit hit,((GunInfo)itemInfo).range))
         {
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
-            Debug.Log(hit.collider.name);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
+            Debug.Log(hit.collider.gameObject.name);
+            if (hit.collider.tag == "Player")
+            {
+                hitMarker.SetActive(true);
+                Invoke("HitmarkerAway", 0.3f);
+            }
+            DetermineRecoil();
         }
 
         ((GunInfo)itemInfo).bulletsleft--;
@@ -81,15 +90,15 @@ public class SingleShotGun : Gun
 
         if (((GunInfo)itemInfo).bulletsShot > 0 && ((GunInfo)itemInfo).bulletsleft > 0)
         {
-            Invoke("Shoot", ((GunInfo)itemInfo).timeBetweenShooting);
+         Invoke("Shoot", ((GunInfo)itemInfo).timeBetweenShots);
         }
     }
 
     [PunRPC]
-    public void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
+    void RPC_Shoot(Vector3 hitPosition, Vector3 hitNormal)
     {
         Collider[] colliders = Physics.OverlapSphere(hitPosition, 0.3f);
-        if (colliders.Length != 0)
+        if(colliders.Length != 0)
         {
             GameObject bulletImpactObj = Instantiate(bulletImpactPrefab, hitPosition + hitNormal * 0.001f, Quaternion.LookRotation(hitNormal, Vector3.up) * bulletImpactPrefab.transform.rotation);
             Destroy(bulletImpactObj, 8f);
@@ -153,5 +162,10 @@ public class SingleShotGun : Gun
         {
             transform.localPosition -= Vector3.forward * (((GunInfo)itemInfo).recoil);
         }
+    }
+
+    void HitmarkerAway()
+    {
+        hitMarker.SetActive(false);
     }
 }

@@ -59,7 +59,7 @@ public class GunScript : Gun
         if (Physics.Raycast(ray, out RaycastHit hit, ((GunInfo)itemInfo).range))
         {
             hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
-            pv.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
+            //pv.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal);
         }
 
         ((GunInfo)itemInfo).bulletsleft--;
