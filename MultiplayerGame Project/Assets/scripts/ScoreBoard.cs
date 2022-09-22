@@ -9,6 +9,7 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
     [SerializeField] Transform container;
     [SerializeField] GameObject scoreboardItemPrefab;
     [SerializeField] CanvasGroup CanvasGroup;
+    public bool gameHasEnded;
 
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 
@@ -53,5 +54,17 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
         {
             CanvasGroup.alpha = 0;
         }
+
+        if (gameHasEnded == true)
+        {
+            GameOver();
+            //do end game stuff here
+        }
+        
+    }
+
+    void GameOver()
+    {
+        CanvasGroup.alpha = 1;
     }
 }

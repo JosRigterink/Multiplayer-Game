@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     int kills;
     int deaths;
+    //public int maxKills;
 
     void Awake()
     {
@@ -27,6 +28,15 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             CreateController();
+        }
+    }
+
+    void Update()
+    {
+        if (kills == 5)
+        {
+            GameObject.Find("ScoreBoard").GetComponent<ScoreBoard>().gameHasEnded = true;
+            Debug.Log("Game ended");
         }
     }
 
@@ -51,18 +61,17 @@ public class PlayerManager : MonoBehaviour
     public void GetKill()
     {
         PV.RPC(nameof(RPC_GetKill), PV.Owner);
+        kills++;
     }
 
     [PunRPC]
     void RPC_GetKill()
     {
         kills++;
-
         Hashtable hash = new Hashtable();
         hash.Add("Kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
-
 
     public static PlayerManager Find(Player player)
     {

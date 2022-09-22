@@ -18,6 +18,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public static Launcher Instance;
     public MapData[] maps;
     public int currentmap = 0;
+    public int maxKills;
     [SerializeField] TMP_Text mapValue;
     [SerializeField] GameObject mapSelectButton;
 

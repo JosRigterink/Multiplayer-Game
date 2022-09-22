@@ -22,16 +22,16 @@ MonoBehaviour:
   magazineSize: 20
   bulletsPerTap: 1
   allowButtonHold: 0
-  bulletsleft: 20
+  bulletsleft: 0
   bulletsShot: 0
-  ammoTotal: 140
+  ammoTotal: 200
   shotsFired: 0
   shooting: 0
   readyToShoot: 1
   reloading: 0
   holdingWeapon: 1
   normalLocalPosition: {x: 0, y: 0, z: 0}
-  aimingLocalPosition: {x: -0.23, y: 0.06, z: 0.029}
+  aimingLocalPosition: {x: -0.227, y: 0.01, z: -0.019}
   recoil: 0.1
   aimSmoothing: 10
   aimFieldOfView: 30
