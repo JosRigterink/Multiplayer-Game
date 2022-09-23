@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     int kills;
     int deaths;
     //public int maxKills;
+    bool maxKillsReached;
 
     void Awake()
     {
@@ -33,9 +34,19 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        if (kills == 5)
+        if (kills == 3)
         {
-            GameObject.Find("ScoreBoard").GetComponent<ScoreBoard>().gameHasEnded = true;
+            maxKillsReached = true;
+        }
+
+        if (GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded == true)
+        {
+            return;
+        }
+
+        if (maxKillsReached == true)
+        {
+            GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
             Debug.Log("Game ended");
         }
     }
