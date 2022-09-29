@@ -5,6 +5,7 @@ using Photon.Pun;
 using System.IO;
 using Photon.Realtime;
 using System.Linq;
+using TMPro;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PlayerManager : MonoBehaviour
@@ -34,11 +35,6 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        if (kills == 3)
-        {
-            maxKillsReached = true;
-        }
-
         if (GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded == true)
         {
             return;
@@ -73,6 +69,10 @@ public class PlayerManager : MonoBehaviour
     {
         PV.RPC(nameof(RPC_GetKill), PV.Owner);
         kills++;
+        if (kills == Launcher.Instance.maxKills)
+        {
+            PV.RPC("RPC_EnableWinscreen", RpcTarget.All);
+        }
     }
 
     [PunRPC]
@@ -82,11 +82,24 @@ public class PlayerManager : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("Kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        if (kills == Launcher.Instance.maxKills)
+        {
+            //maxKillsReached = true;
+            PV.RPC("RPC_EnableWinscreen", RpcTarget.All);
+        }
     }
 
     public static PlayerManager Find(Player player)
     {
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
+    }
+
+    [PunRPC]
+    void RPC_EnableWinscreen()
+    {
+        maxKillsReached = true;
+        GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().endgametext.text = "GameOver max kills reached Winner:" + PV.Owner.NickName;
+        GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
     }
 
 }

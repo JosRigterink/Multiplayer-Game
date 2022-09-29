@@ -7,7 +7,7 @@ using TMPro;
 public class UserNameDisplay : MonoBehaviour
 {
     [SerializeField] PhotonView playerPV;
-    [SerializeField] TMP_Text text;
+    [SerializeField]  public TMP_Text text;
 
     void Start()
     {

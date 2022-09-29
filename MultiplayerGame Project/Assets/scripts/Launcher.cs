@@ -16,9 +16,9 @@ public class MapData
 public class Launcher : MonoBehaviourPunCallbacks
 {
     public static Launcher Instance;
+    public int maxKills;
     public MapData[] maps;
     public int currentmap = 0;
-    public int maxKills;
     [SerializeField] TMP_Text mapValue;
     [SerializeField] GameObject mapSelectButton;
 
@@ -30,6 +30,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
+    [SerializeField] TMP_Text maxKillsText;
 
     void Awake()
     {
@@ -143,5 +144,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListIten>().SetUp(newPlayer);
+    }
+
+    public void ChangeMaxKills()
+    {
+        maxKills++;
+        maxKillsText.text = "Maxkills: " + maxKills.ToString();
+    }
+
+    public void DecreaseMaxKills()
+    {
+        maxKills--;
+        maxKillsText.text = "Maxkills: " + maxKills.ToString();
     }
 }
