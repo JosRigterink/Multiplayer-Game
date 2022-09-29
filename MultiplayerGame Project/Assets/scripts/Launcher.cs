@@ -30,7 +30,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
-    [SerializeField] TMP_Text maxKillsText;
+    [SerializeField] GameObject maxKillItem;
+    [SerializeField] GameObject maxKillText;
 
     void Awake()
     {
@@ -86,12 +87,14 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
+        maxKillItem.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
+        maxKillItem.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -149,12 +152,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void ChangeMaxKills()
     {
         maxKills++;
-        maxKillsText.text = "Maxkills: " + maxKills.ToString();
+        maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
     }
 
     public void DecreaseMaxKills()
     {
         maxKills--;
-        maxKillsText.text = "Maxkills: " + maxKills.ToString();
+        maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
     }
 }
