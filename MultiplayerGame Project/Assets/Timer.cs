@@ -16,7 +16,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         currentTime = startingTime;
-        PV = GetComponent<PhotonView>();
+        //PV = GetComponent<PhotonView>();
     }
 
     void Update()
@@ -27,6 +27,7 @@ public class Timer : MonoBehaviour
         if (currentTime <= 0)
         {
             currentTime = 0;
+            //something to end the game;
         }
         //PV.RPC("RPC_TimerUpdate", RpcTarget.All);
         DisplayTime(currentTime);
@@ -37,17 +38,5 @@ public class Timer : MonoBehaviour
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
         countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-    }
-
-    [PunRPC]
-    void RPC_TimerUpdate()
-    {
-        currentTime -= 1 * Time.deltaTime;
-        countdownText.text = currentTime.ToString("0");
-
-        if (currentTime <= 0)
-        {
-            currentTime = 0;
-        }
     }
 }

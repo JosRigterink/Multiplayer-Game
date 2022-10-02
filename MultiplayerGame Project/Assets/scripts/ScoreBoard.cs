@@ -9,8 +9,6 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
     [SerializeField] Transform container;
     [SerializeField] GameObject scoreboardItemPrefab;
     [SerializeField] CanvasGroup CanvasGroup;
-    [SerializeField] GameObject pauzeMenu;
-    public static bool gameIsPaused = false;
 
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
 
@@ -47,18 +45,6 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameIsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
-        }
-      
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             CanvasGroup.alpha = 1;
@@ -69,17 +55,5 @@ public class ScoreBoard : MonoBehaviourPunCallbacks
         }
     }
 
-    void Resume()
-    {
-        pauzeMenu.SetActive(false);
-        gameIsPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    void Pause()
-    {
-        pauzeMenu.SetActive(true);
-        gameIsPaused = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
+   
 }

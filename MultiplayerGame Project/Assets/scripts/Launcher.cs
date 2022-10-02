@@ -33,6 +33,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject maxKillItem;
     [SerializeField] GameObject maxKillText;
 
+    [SerializeField] float currentCountdown = 5f;
+    [SerializeField] bool startTimer;
+    [SerializeField] TMP_Text startgameCounter;
+
     void Awake()
     {
         Instance = this;
@@ -43,6 +47,21 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connecting to Master");
         PhotonNetwork.ConnectUsingSettings();
+    }
+    void Update()
+    {
+        if (startTimer)
+        {
+            currentCountdown -= 1 * Time.deltaTime;
+            startgameCounter.text = currentCountdown.ToString("0");
+
+            if (currentCountdown <= 0)
+            {
+                currentCountdown = 0;
+                PhotonNetwork.LoadLevel(maps[currentmap].scene);
+                startTimer = false;
+            }
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -111,8 +130,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        startTimer = true;
         //PhotonNetwork.LoadLevel(1);
-        PhotonNetwork.LoadLevel(maps[currentmap].scene);
+        //PhotonNetwork.LoadLevel(maps[currentmap].scene);
     }
     public void leaveRoom()
     {
@@ -151,13 +171,18 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void ChangeMaxKills()
     {
-        maxKills++;
+        maxKills += 5;
         maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
     }
 
     public void DecreaseMaxKills()
     {
-        maxKills--;
+        maxKills -= 5;
         maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
+        if (maxKills <=0)
+        {
+            maxKills = 0;
+            maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
+        }
     }
 }

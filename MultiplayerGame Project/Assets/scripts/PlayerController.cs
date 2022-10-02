@@ -17,6 +17,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
 
     [SerializeField] Item[] items;
 
+    [Header("Damage Overlay")]
+    public Image overlay;
+    public float duration;
+    public float fadeSpeed;
+
+    private float durationTimer;
+
     int itemIndex;
     int previousItemIndex = -1;
 
@@ -46,6 +53,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
 
         if (PV.IsMine)
         {
@@ -69,6 +77,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         Look();
         Move();
         Jump();
+
+        if (overlay.color.a > 0)
+        {
+            durationTimer += Time.deltaTime;
+            if (durationTimer > duration)
+            {
+                float tempAlpha = overlay.color.a;
+                tempAlpha -= Time.deltaTime * fadeSpeed;
+                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+            }
+        }
 
         for (int i = 0; i < items.Length; i++)
         {
@@ -192,6 +211,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         currentHealth -= damage;
 
         healthbarImage.fillAmount = currentHealth / maxHealth;
+        durationTimer = 0;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
 
         if (currentHealth <= 0)
         {
