@@ -220,7 +220,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
             PlayerManager.Find(info.Sender).GetKill();
         }
     }
-
     void Die()
     {
         playerManager.Die();

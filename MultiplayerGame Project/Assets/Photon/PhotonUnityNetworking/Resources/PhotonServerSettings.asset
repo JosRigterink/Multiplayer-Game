@@ -45,6 +45,9 @@ MonoBehaviour:
   - RPC_EnableWinscreen
   - RPC_UpdateTimer
   - RPC_TimerUpdate
+  - RPC_SyncTimer
+  - RPC_DecreaseKillStreak
+  - RPC_DecreaseStreak
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

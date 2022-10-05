@@ -20,6 +20,9 @@ public class PlayerManager : MonoBehaviour
     //public int maxKills;
     bool maxKillsReached;
 
+    public int killstreakCounter;
+    bool killstreakbool;
+
     void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -55,11 +58,12 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
+        killstreakCounter = 0;
+        PV.RPC(nameof(RPC_DecreaseStreak), RpcTarget.Others);
         PhotonNetwork.Destroy(controller);
         Invoke("CreateController", 3f);
         //CreateController();
         deaths++;
-
         Hashtable hash = new Hashtable();
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
@@ -67,6 +71,7 @@ public class PlayerManager : MonoBehaviour
 
     public void GetKill()
     {
+        killstreakCounter++;
         PV.RPC(nameof(RPC_GetKill), PV.Owner);
         kills++;
         if (kills == Launcher.Instance.maxKills)
@@ -79,6 +84,7 @@ public class PlayerManager : MonoBehaviour
     void RPC_GetKill()
     {
         kills++;
+        killstreakCounter++;
         Hashtable hash = new Hashtable();
         hash.Add("Kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
@@ -101,5 +107,9 @@ public class PlayerManager : MonoBehaviour
         GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().endgametext.text = "GameOver max kills reached Winner:" + PV.Owner.NickName;
         GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
     }
-
+    [PunRPC]
+    void RPC_DecreaseStreak()
+    {
+        killstreakCounter = 0;
+    }
 }

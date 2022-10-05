@@ -7,11 +7,11 @@ using Photon.Pun;
 
 public class Timer : MonoBehaviour
 {
-    float currentTime = 0f;
+    public float currentTime = 0f;
     public float startingTime = 90f;
     PhotonView PV;
 
-    [SerializeField] TMP_Text countdownText;
+    [SerializeField] public TMP_Text countdownText;
 
     void Start()
     {

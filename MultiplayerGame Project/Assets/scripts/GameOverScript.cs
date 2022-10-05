@@ -10,6 +10,7 @@ public class GameOverScript : MonoBehaviour
     public GameObject scoreboard;
     public TMP_Text endgametext;
     public GameObject mapCam;
+    public GameObject battleTimer;
 
     // Update is called once per frame
     void Update()
@@ -31,6 +32,7 @@ public class GameOverScript : MonoBehaviour
         mapCam.SetActive(true);
         gameObject.GetComponent<Canvas>().enabled = true;
         //endgametext.text = "GameOver max kills reached Winner:" + PhotonNetwork.NickName;
+        battleTimer.GetComponent<Timer>().enabled = false;
         scoreboard.GetComponent<CanvasGroup>().alpha = 1;
         Invoke("DestroyAllPlayers", 0.5f);
     }
