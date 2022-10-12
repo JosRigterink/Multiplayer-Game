@@ -7,7 +7,7 @@ using Photon.Pun;
 
 public class Timer : MonoBehaviour
 {
-    public float currentTime = 0f;
+    float currentTime = 0f;
     public float startingTime = 90f;
     PhotonView PV;
 
@@ -24,9 +24,16 @@ public class Timer : MonoBehaviour
         currentTime -= 1 * Time.deltaTime;
         countdownText.text = currentTime.ToString("0");
 
+        if (currentTime < 11)
+        {
+            countdownText.color = Color.red;
+        }
+
         if (currentTime <= 0)
         {
             currentTime = 0;
+            GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
+            GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().endgametext.text = "Battle Time Ended";
             //something to end the game;
         }
         //PV.RPC("RPC_TimerUpdate", RpcTarget.All);

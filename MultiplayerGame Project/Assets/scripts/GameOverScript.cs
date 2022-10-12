@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-public class GameOverScript : MonoBehaviour
+public class GameOverScript : MonoBehaviourPunCallbacks
 {
     public bool gameHasEnded;
     public GameObject scoreboard;
@@ -43,5 +44,18 @@ public class GameOverScript : MonoBehaviour
         {
             PhotonNetwork.DestroyAll();
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        SceneManager.LoadScene(0);
+    }
+
+    public void SwitchScene()
+    {
+        Destroy(RoomManager.Instance.gameObject);
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel(0);
     }
 }

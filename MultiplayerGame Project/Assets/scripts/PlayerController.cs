@@ -48,13 +48,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         PV = GetComponent<PhotonView>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+        playerManager.killstreakCounter = 0;
     }
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
-
         if (PV.IsMine)
         {
             EquipItem(1);
