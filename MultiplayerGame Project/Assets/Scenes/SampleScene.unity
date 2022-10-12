@@ -1473,7 +1473,7 @@ MonoBehaviour:
   maps:
   - name: Shitment
     scene: 1
-  - name: plain
+  - name: NoSkillHouse
     scene: 2
   currentmap: 0
   mapValue: {fileID: 313269003}
