@@ -217,6 +217,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         if (currentHealth <= 0)
         {
             Die();
+            if (PlayerManager.Find(info.Sender) == playerManager)
+            {
+                return;
+            }
             PlayerManager.Find(info.Sender).GetKill();
         }
     }

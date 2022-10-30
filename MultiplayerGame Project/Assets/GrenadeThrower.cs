@@ -6,27 +6,33 @@ using System.IO;
 
 public class GrenadeThrower : MonoBehaviour
 {
-    public float throwForce = 40f;
+    public float throwForce = 20f;
     public GameObject grenadePrefab;
+    public int grenadeAmount;
     PhotonView pv;
     // Start is called before the first frame update
     void Start()
     {
-        pv = GetComponent<PhotonView>();
+        //pv = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (grenadeAmount >0 && Input.GetMouseButtonDown(2))
         {
+            grenadeAmount--;
             ThrowGrenade();
+            if (grenadeAmount <= 0)
+            {
+                grenadeAmount = 0;
+            }
         }
     }
 
     void ThrowGrenade()
     {
-        GameObject grenade = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "SkuffedGrenade"), transform.position, transform.rotation, 0, new object[] {pv.ViewID });
+        GameObject grenade = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "SkuffedGrenade"), transform.position, transform.rotation);
         Rigidbody rb = grenade.GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
     }
