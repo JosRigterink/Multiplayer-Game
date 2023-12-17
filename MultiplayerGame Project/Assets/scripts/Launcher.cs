@@ -42,7 +42,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         Instance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Connecting to Master");
@@ -179,9 +178,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         maxKills -= 5;
         maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
-        if (maxKills <=0)
+        if (maxKills <= 5)
         {
-            maxKills = 0;
+            maxKills = 5;
             maxKillText.GetComponent<TMP_Text>().text = "Maxkills: " + maxKills.ToString();
         }
     }
