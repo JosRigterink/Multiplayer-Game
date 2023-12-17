@@ -74,10 +74,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             return;
         }
-        Look();
-        Move();
-        Jump();
-
+        if (!PauseMenu.gameIsPaused)
+        {
+            Look();
+            Move();
+            Jump();
+        }
+       
         if (overlay.color.a > 0)
         {
             durationTimer += Time.deltaTime;
@@ -97,27 +100,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
                 break;
             }
         }
-
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+        if (!PauseMenu.gameIsPaused)
         {
-            if (itemIndex >= items.Length - 1)
+            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
             {
-                EquipItem(0);
+                if (itemIndex >= items.Length - 1)
+                {
+                    EquipItem(0);
+                }
+                else
+                {
+                    EquipItem(itemIndex + 1);
+                }
             }
-            else
+            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
             {
-                EquipItem(itemIndex + 1);
-            }
-        }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
-        {
-            if (itemIndex <= 0)
-            {
-                EquipItem(items.Length - 1);
-            }
-            else
-            {
-                EquipItem(itemIndex - 1);
+                if (itemIndex <= 0)
+                {
+                    EquipItem(items.Length - 1);
+                }
+                else
+                {
+                    EquipItem(itemIndex - 1);
+                }
             }
         }
        
