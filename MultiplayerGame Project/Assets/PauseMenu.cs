@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,8 +52,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Leave()
     {
-        Debug.Log("QuitGame");
-        Application.Quit();
+        Debug.Log("leaving room");
         //selution for now^
     }
 }
