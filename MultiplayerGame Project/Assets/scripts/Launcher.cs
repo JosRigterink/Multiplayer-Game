@@ -20,7 +20,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     public MapData[] maps;
     public int currentmap = 0;
     [SerializeField] TMP_Text mapValue;
-    [SerializeField] GameObject mapSelectButton;
 
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] TMP_Text errorText;
@@ -29,8 +28,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject roomListItemPrefab;
     [SerializeField] Transform playerListContent;
     [SerializeField] GameObject playerListItemPrefab;
-    [SerializeField] GameObject startGameButton;
-    [SerializeField] GameObject maxKillItem;
+    [SerializeField] GameObject isHostObject;
     [SerializeField] GameObject maxKillText;
 
     [SerializeField] float currentCountdown = 5f;
@@ -103,16 +101,12 @@ public class Launcher : MonoBehaviourPunCallbacks
             Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListIten>().SetUp(players[i]);
         }
 
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
-        maxKillItem.SetActive(PhotonNetwork.IsMasterClient);
+        isHostObject.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        mapSelectButton.SetActive(PhotonNetwork.IsMasterClient);
-        maxKillItem.SetActive(PhotonNetwork.IsMasterClient);
+        isHostObject.SetActive(PhotonNetwork.IsMasterClient);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

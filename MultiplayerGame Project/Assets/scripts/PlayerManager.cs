@@ -79,12 +79,14 @@ public class PlayerManager : MonoBehaviour
         if (killstreakCounter == 3)
         {
             Debug.Log("3 Kill Streak!");
+            PV.RPC("RPC_KillStreaks", RpcTarget.All);
             //do killstreak stuff here
         }
 
         if (killstreakCounter == 4)
         {
             Debug.Log("4 Kill Streak!");
+            PV.RPC("RPC_KillStreaks", RpcTarget.All);
             //do killstreak stuff here
         }
 
@@ -107,12 +109,14 @@ public class PlayerManager : MonoBehaviour
         if (killstreakCounter == 3)
         {
             Debug.Log("3 Kill Streak!");
+            PV.RPC("RPC_KillStreaks", RpcTarget.All);
             //do killstreak stuff here
         }
 
         if (killstreakCounter == 4)
         {
             Debug.Log("4 Kill Streak!");
+            PV.RPC("RPC_KillStreaks", RpcTarget.All);
             //do killstreak stuff here
         }
     }
@@ -126,7 +130,21 @@ public class PlayerManager : MonoBehaviour
     void RPC_EnableWinscreen()
     {
         maxKillsReached = true;
-        GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().endgametext.text = "GameOver max kills reached Winner:" + PV.Owner.NickName;
-        GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
+        GameOverScript gameOverScript = GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>();
+        gameOverScript.endgametext.text = "GameOver max kills reached Winner:" + PV.Owner.NickName;
+        gameOverScript.gameHasEnded = true;
+    }
+
+    [PunRPC]
+    void RPC_KillStreaks()
+    {
+        //laat zien dat diegene op een killstreak zit
+        GameObject uiTimer = GameObject.Find("TimerUI").gameObject;
+        uiTimer.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = PV.Owner.NickName + " is on a " + killstreakCounter + " KillStreak!";
+        Invoke("HideKillStreakText", uiTimer.GetComponent<Timer>().showKillstreakText);
+    }
+    void HideKillStreakText()
+    {
+        GameObject.Find("TimerUI").transform.GetChild(1).gameObject.GetComponent<TMP_Text>().text = "";
     }
 }

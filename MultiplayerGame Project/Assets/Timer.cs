@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour
 {
     float currentTime = 0f;
     public float startingTime = 90f;
+    public float showKillstreakText = 5f;
     PhotonView PV;
 
     [SerializeField] public TMP_Text countdownText;
