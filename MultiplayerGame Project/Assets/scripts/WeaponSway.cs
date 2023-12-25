@@ -11,7 +11,10 @@ public class WeaponSway : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        WeaponSwayy();
+        if (!PauseMenu.gameIsPaused)
+        {
+            WeaponSwayy();
+        }
     }
 
     void WeaponSwayy()

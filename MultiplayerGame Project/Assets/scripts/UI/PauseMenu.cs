@@ -15,7 +15,6 @@ public class PauseMenu : MonoBehaviour
             if (gameIsPaused)
             {
                 Resume();
-                Cursor.lockState = CursorLockMode.Locked;
             }
             else
             {
@@ -53,6 +52,5 @@ public class PauseMenu : MonoBehaviour
     public void Leave()
     {
         Debug.Log("leaving room");
-        //selution for now^
     }
 }

@@ -19,13 +19,16 @@ public class GrenadeThrower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (grenadeAmount >0 && Input.GetMouseButtonDown(2))
+        if (!PauseMenu.gameIsPaused)
         {
-            grenadeAmount--;
-            ThrowGrenade();
-            if (grenadeAmount <= 0)
+            if (grenadeAmount > 0 && Input.GetMouseButtonDown(2))
             {
-                grenadeAmount = 0;
+                grenadeAmount--;
+                ThrowGrenade();
+                if (grenadeAmount <= 0)
+                {
+                    grenadeAmount = 0;
+                }
             }
         }
     }

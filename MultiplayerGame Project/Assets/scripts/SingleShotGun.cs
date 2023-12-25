@@ -29,16 +29,19 @@ public class SingleShotGun : Gun
 
     void Update()
     {
-        MyInput();
-        if (cam == null)
+        if (!PauseMenu.gameIsPaused)
         {
-            cam = FindObjectOfType<Camera>();
+            MyInput();
+            if (cam == null)
+            {
+                cam = FindObjectOfType<Camera>();
+            }
+            if (cam == null)
+            {
+                return;
+            }
+            DetermineAim();
         }
-        if (cam == null)
-        {
-            return;
-        }
-        DetermineAim();
     }
 
     void MyInput()

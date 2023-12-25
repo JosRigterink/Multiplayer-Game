@@ -168,7 +168,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable
         {
             return;
         }
-        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        if(!PauseMenu.gameIsPaused)
+        {
+            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        }   
     }
 
     void EquipItem(int _index)
