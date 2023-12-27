@@ -1611,7 +1611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smooth: 2
-  multiplier: 4
+  multiplier: 2
 --- !u!1 &7726030093264473452
 GameObject:
   m_ObjectHideFlags: 0

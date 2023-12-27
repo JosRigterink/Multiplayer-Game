@@ -133,7 +133,7 @@ public class SingleShotGun : Gun
             ((GunInfo)itemInfo).shotsFired = 0;
         }
 
-       ((GunInfo)itemInfo).ammoTotal -= ((GunInfo)itemInfo).shotsFired;
+        ((GunInfo)itemInfo).ammoTotal -= ((GunInfo)itemInfo).shotsFired;
         ((GunInfo)itemInfo).bulletsleft = ((GunInfo)itemInfo).magazineSize;
         ((GunInfo)itemInfo).reloading = false;
         ((GunInfo)itemInfo).shotsFired -= ((GunInfo)itemInfo).shotsFired;
