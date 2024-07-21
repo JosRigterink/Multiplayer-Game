@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 [System.Serializable]
 public class MapData
@@ -34,6 +35,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] float currentCountdown = 5f;
     [SerializeField] bool startTimer;
     [SerializeField] TMP_Text startgameCounter;
+    [SerializeField] int gameTimeInSec;
 
     void Awake()
     {
@@ -80,7 +82,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             return;
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+
+        RoomOptions roomOptions = new RoomOptions();
+        Hashtable options = new Hashtable();
+        options.Add("Time", gameTimeInSec);
+        roomOptions.CustomRoomProperties = options;
+
+        PhotonNetwork.CreateRoom(roomNameInputField.text, roomOptions);
         MenuManager.Instance.OpenMenu("loading");
     }
 

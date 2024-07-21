@@ -4,47 +4,60 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Timer : MonoBehaviour
 {
-    float currentTime = 0f;
-    public float startingTime = 90f;
     public float showKillstreakText = 5f;
-    PhotonView PV;
 
-    [SerializeField] public TMP_Text countdownText;
+    public TMP_Text countdownText;
+    public bool count;
+    public int Time;
+    ExitGames.Client.Photon.Hashtable setTime = new ExitGames.Client.Photon.Hashtable();
 
-    void Start()
+    private void Start()
     {
-        currentTime = startingTime;
-        //PV = GetComponent<PhotonView>();
+        count = true;
     }
 
-    void Update()
+    private void Update()
     {
-        currentTime -= 1 * Time.deltaTime;
-        countdownText.text = currentTime.ToString("0");
+        Time = (int)PhotonNetwork.CurrentRoom.CustomProperties["Time"];
+        float minutes = Mathf.FloorToInt((int)PhotonNetwork.CurrentRoom.CustomProperties["Time"] / 60);
+        float seconds = Mathf.FloorToInt((int)PhotonNetwork.CurrentRoom.CustomProperties["Time"] % 60);
 
-        if (currentTime < 11)
+
+        countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (count)
+            {
+                count = false;
+                StartCoroutine(timer());
+            }
+        }
+
+        if (Time < 11)
         {
             countdownText.color = Color.red;
         }
 
-        if (currentTime <= 0)
+        if (Time < 0)
         {
-            currentTime = 0;
+            Time = 0;
+            countdownText.text = "00:00";
             GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().gameHasEnded = true;
             GameObject.Find("GameOverCanvas").GetComponent<GameOverScript>().endgametext.text = "Battle Time Ended";
-            //something to end the game;
         }
-        //PV.RPC("RPC_TimerUpdate", RpcTarget.All);
-        DisplayTime(currentTime);
     }
 
-    void DisplayTime(float timeToDisplay)
+    IEnumerator timer()
     {
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        yield return new WaitForSeconds(1);
+        int nexttime = Time -= 1;
+        setTime["Time"] = nexttime;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(setTime);
+
+        count = true;
     }
 }

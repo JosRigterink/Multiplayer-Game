@@ -1510,6 +1510,7 @@ MonoBehaviour:
   currentCountdown: 5
   startTimer: 0
   startgameCounter: {fileID: 1864816386}
+  gameTimeInSec: 300
 --- !u!114 &584217043
 MonoBehaviour:
   m_ObjectHideFlags: 0
